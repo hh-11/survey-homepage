@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>問卷首頁</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
+      background: linear-gradient(135deg, #f4f7fb 0%, #eef2ff 100%);
+      color: #1f2937;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 760px;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.10);
+      padding: 40px 32px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #e0e7ff;
+      color: #3730a3;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 32px;
+      line-height: 1.3;
+    }
+
+    .subtitle {
+      font-size: 17px;
+      line-height: 1.8;
+      color: #4b5563;
+      margin-bottom: 24px;
+    }
+
+    .section {
+      background: #f9fafb;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+
+    .section h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .section p, .section li {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #374151;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 20px 0 28px;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .checkbox-row input {
+      margin-top: 4px;
+      transform: scale(1.2);
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 14px 24px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      transform: none;
+    }
+
+    .primary-btn {
+      background: #2563eb;
+      color: white;
+    }
+
+    .secondary-btn {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .hint {
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .status {
+      margin-top: 18px;
+      font-size: 14px;
+      color: #1d4ed8;
+      min-height: 22px;
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      font-size: 13px;
+      color: #6b7280;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 640px) {
+      .card {
+        padding: 28px 20px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="badge">研究問卷</div>
+    <h1>歡迎參與本研究</h1>
+    <p class="subtitle">
+      感謝您的熱心參與。本問卷為一項學術研究，目的是為了解讀者對於「AI 健康助理與使用者對話情境中」的資訊評估與個人感受。
+      您的填答對我們的研究非常重要，請按實際狀況作答。您所填寫的任何資料僅用於學術成果報告，絕對保密，不會將您的個人資料洩漏予第三人，也不會移作任何商業使用，未來資料結果將以集體數據方式呈現。
+    </p>
+
+    <section class="section">
+      <h2>研究聯絡資訊</h2>
+      <p>
+        計畫主持人：國立中山大學資訊管理學系李怡珍 博士<br />
+        電子郵件：yclee@mis.nsysu.edu.tw
+      </p>
+      <p>
+        研究生：臺大資管所博士研究生 孫煥煥（sunhh.serena@gmail.com）、中山資管所碩士研究生 徐雅芝（barbarossahsu@gmail.com）
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>問卷說明與抽獎</h2>
+      <p>
+        本問卷填答時間不設限，請依個人速度安心填答。問卷收集完成後，將隨機抽出有效問卷共計 30 名，贈送 200 元 7-11 禮券，中獎者將以電子郵件通知。
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>問卷流程與步驟</h2>
+      <ul>
+        <li>第一步驟：請先回答您對於該健康議題的個人看法。</li>
+        <li>第二步驟：請瀏覽相關貼文，並專注閱讀貼文中的「AI 健康助理與使用者之間的對話內容」。</li>
+        <li>第三步驟：請根據您閱讀貼文後的感受，回答相關題項。</li>
+        <li>第四步驟：請填寫個人基本資料。</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>填答提醒</h2>
+      <p>
+        為確保資料品質，填答時請盡量專注，並避免中途離開或切換頁面。閱讀完本頁面後，即可正式開始。
+      </p>
+    </section>
+
+    <label class="checkbox-row">
+      <input type="checkbox" id="consentCheckbox" />
+      <span>我已閱讀上述說明，並同意參與本研究。</span>
+    </label>
+
+    <div class="button-row">
+      <button id="startBtn" class="primary-btn" disabled>開始作答</button>
+      <button id="previewBtn" class="secondary-btn" type="button">測試隨機分派</button>
+      <span class="hint">正式上線前可先用「測試隨機分派」確認功能。</span>
+    </div>
+
+    <div class="status" id="statusText"></div>
+
+    <p class="footer-note">
+      若您有任何問題，請聯繫研究者：請改成你的 email
+    </p>
+  </main>
+
+  <script>
+    // 請將以下 8 個網址替換成您的 Google 表單連結
+    const surveyUrls = [
+      "請貼上第1個Google Form連結",
+      "請貼上第2個Google Form連結",
+      "請貼上第3個Google Form連結",
+      "請貼上第4個Google Form連結",
+      "請貼上第5個Google Form連結",
+      "請貼上第6個Google Form連結",
+      "請貼上第7個Google Form連結",
+      "請貼上第8個Google Form連結"
+    ];
+
+    const consentCheckbox = document.getElementById("consentCheckbox");
+    const startBtn = document.getElementById("startBtn");
+    const previewBtn = document.getElementById("previewBtn");
+    const statusText = document.getElementById("statusText");
+
+    consentCheckbox.addEventListener("change", function () {
+      startBtn.disabled = !this.checked;
+      statusText.textContent = this.checked
+        ? "已同意參與，可以開始作答。"
+        : "請先勾選同意參與研究。";
+    });
+
+    function getRandomUrl() {
+      const validUrls = surveyUrls.filter(url => url && url.startsWith("http"));
+      if (validUrls.length !== 8) {
+        throw new Error("8 個問卷連結尚未填完整，請先檢查 surveyUrls。");
+      }
+      const randomIndex = Math.floor(Math.random() * validUrls.length);
+      return validUrls[randomIndex];
+    }
+
+    startBtn.addEventListener("click", function () {
+      try {
+        startBtn.disabled = true;
+        previewBtn.disabled = true;
+        statusText.textContent = "系統分派中，請稍候...";
+
+        const selectedUrl = getRandomUrl();
+        window.location.href = selectedUrl;
+      } catch (error) {
+        statusText.textContent = error.message;
+        startBtn.disabled = false;
+        previewBtn.disabled = false;
+      }
+    });
+
+    previewBtn.addEventListener("click", function () {
+      try {
+        const selectedUrl = getRandomUrl();
+        statusText.textContent = `測試結果：本次會分派到 ${selectedUrl}`;
+      } catch (error) {
+        statusText.textContent = error.message;
+      }
+    });
+  </script>
+</body>
+</html>
