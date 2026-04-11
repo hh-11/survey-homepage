@@ -227,12 +227,12 @@
     const surveyUrls = [
       "https://forms.gle/FnfqBnr4CE6A7piJ7",
       "https://forms.gle/bM8kyFCGunCQTRrx5",
-      "請貼上第3個Google Form連結",
-      "請貼上第4個Google Form連結",
-      "請貼上第5個Google Form連結",
-      "請貼上第6個Google Form連結",
-      "請貼上第7個Google Form連結",
-      "請貼上第8個Google Form連結"
+      "https://forms.gle/FnfqBnr4CE6A7piJ7",
+      "https://forms.gle/FnfqBnr4CE6A7piJ7",
+      "https://forms.gle/FnfqBnr4CE6A7piJ7",
+      "https://forms.gle/FnfqBnr4CE6A7piJ7",
+      "https://forms.gle/FnfqBnr4CE6A7piJ7",
+      "https://forms.gle/FnfqBnr4CE6A7piJ7"
     ];
 
     const consentCheckbox = document.getElementById("consentCheckbox");
@@ -250,7 +250,7 @@
     function getRandomUrl() {
       const validUrls = surveyUrls.filter(url => url && url.startsWith("http"));
       if (validUrls.length !== 8) {
-        throw new Error("8 個問卷連結尚未填完整，請先檢查 surveyUrls。");
+        throw new Error("8 個問卷連結尚未填完整，需要檢查 surveyUrls。");
       }
       const randomIndex = Math.floor(Math.random() * validUrls.length);
       return validUrls[randomIndex];
