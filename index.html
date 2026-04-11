@@ -223,63 +223,56 @@
   </main>
 
   <script>
-    // 請將以下 8 個網址替換成您的 Google 表單連結
-    const surveyUrls = [
-      "https://forms.gle/FnfqBnr4CE6A7piJ7",
-      "https://forms.gle/bM8kyFCGunCQTRrx5",
-      "https://forms.gle/FnfqBnr4CE6A7piJ7",
-      "https://forms.gle/FnfqBnr4CE6A7piJ7",
-      "https://forms.gle/FnfqBnr4CE6A7piJ7",
-      "https://forms.gle/FnfqBnr4CE6A7piJ7",
-      "https://forms.gle/FnfqBnr4CE6A7piJ7",
-      "https://forms.gle/FnfqBnr4CE6A7piJ7"
-    ];
+  const gasUrl = "https://script.google.com/macros/s/AKfycbwprzLh-z2sTzzjJd1ZZjdOsjt8vxeJ1VZhmcqmClqilE2v9rHAALpFcuXXP4oinpiY/exec";
+  const consentCheckbox = document.getElementById("consentCheckbox");
+  const startBtn = document.getElementById("startBtn");
+  const previewBtn = document.getElementById("previewBtn");
+  const statusText = document.getElementById("statusText");
 
-    const consentCheckbox = document.getElementById("consentCheckbox");
-    const startBtn = document.getElementById("startBtn");
-    const previewBtn = document.getElementById("previewBtn");
-    const statusText = document.getElementById("statusText");
+  consentCheckbox.addEventListener("change", function () {
+    startBtn.disabled = !this.checked;
+    statusText.textContent = this.checked
+      ? "已同意參與，可以開始作答。"
+      : "請先勾選同意參與研究。";
+  });
 
-    consentCheckbox.addEventListener("change", function () {
-      startBtn.disabled = !this.checked;
-      statusText.textContent = this.checked
-        ? "已同意參與，可以開始作答。"
-        : "請先勾選同意參與研究。";
-    });
+  async function getAssignedUrl() {
+    const response = await fetch(gasUrl);
+    const data = await response.json();
 
-    function getRandomUrl() {
-      const validUrls = surveyUrls.filter(url => url && url.startsWith("http"));
-      if (validUrls.length !== 8) {
-        throw new Error("8 個問卷連結尚未填完整，需要檢查 surveyUrls。");
-      }
-      const randomIndex = Math.floor(Math.random() * validUrls.length);
-      return validUrls[randomIndex];
+    if (!data.success) {
+      throw new Error(data.message || "分派失敗");
     }
 
-    startBtn.addEventListener("click", function () {
-      try {
-        startBtn.disabled = true;
-        previewBtn.disabled = true;
-        statusText.textContent = "系統分派中，請稍候...";
+    return data;
+  }
 
-        const selectedUrl = getRandomUrl();
-        window.location.href = selectedUrl;
-      } catch (error) {
-        statusText.textContent = error.message;
-        startBtn.disabled = false;
-        previewBtn.disabled = false;
-      }
-    });
+  startBtn.addEventListener("click", async function () {
+    try {
+      startBtn.disabled = true;
+      previewBtn.disabled = true;
+      statusText.textContent = "系統分派中，請稍候...";
 
-    previewBtn.addEventListener("click", function () {
-      try {
-        const selectedUrl = getRandomUrl();
-        statusText.textContent = `測試結果：本次會分派到 ${selectedUrl}`;
-      } catch (error) {
-        statusText.textContent = error.message;
-      }
-    });
-  </script>
-  
+      const result = await getAssignedUrl();
+      statusText.textContent = `已分派至第 ${result.index} 組，正在跳轉...`;
+
+      window.location.href = result.url;
+    } catch (error) {
+      statusText.textContent = "發生錯誤：" + error.message;
+      startBtn.disabled = false;
+      previewBtn.disabled = false;
+    }
+  });
+
+  previewBtn.addEventListener("click", async function () {
+    try {
+      statusText.textContent = "測試分派中...";
+      const result = await getAssignedUrl();
+      statusText.textContent = `測試結果：目前分派到第 ${result.index} 組，連結為 ${result.url}`;
+    } catch (error) {
+      statusText.textContent = "測試失敗：" + error.message;
+    }
+  });
+</script>
 </body>
 </html>
