@@ -123,16 +123,6 @@
       color: white;
     }
 
-    .secondary-btn {
-      background: #e5e7eb;
-      color: #111827;
-    }
-
-    .hint {
-      font-size: 14px;
-      color: #6b7280;
-    }
-
     .status {
       margin-top: 18px;
       font-size: 14px;
@@ -170,13 +160,16 @@
     <section class="section">
       <h2>研究聯絡資訊</h2>
       <p>
-        國立中山大學資訊管理學系專任助理教授 李怡珍博士 （yclee@mis.nsysu.edu.tw）
+        國立臺灣大學資訊管理系／國立中山大學資訊管理系
       </p>
       <p>
-        國立臺灣大學資訊管理學系博士生 孫煥煥（sunhh.serena@gmail.com）
+        指導教授：彭志宏 博士、李怡珍 博士
       </p>
       <p>
-        國立中山大學資訊管理學系碩士研究生 徐雅芝（barbarossahsu@gmail.com）
+        研究生：孫煥煥、徐雅芝 敬上
+      </p>
+      <p>
+        聯絡信箱：yclee@mis.nsysu.edu.tw
       </p>
     </section>
 
@@ -211,68 +204,53 @@
 
     <div class="button-row">
       <button id="startBtn" class="primary-btn" disabled>開始作答</button>
-      <button id="previewBtn" class="secondary-btn" type="button">測試隨機分派</button>
-      <span class="hint">正式上線前可先用「測試隨機分派」確認功能。</span>
     </div>
 
     <div class="status" id="statusText"></div>
 
     <p class="footer-note">
-      若您有任何問題，請聯繫研究者。
+      若您有任何問題，請聯繫研究團隊：yclee@mis.nsysu.edu.tw
     </p>
   </main>
 
   <script>
-  const gasUrl = "https://script.google.com/macros/s/AKfycbwprzLh-z2sTzzjJd1ZZjdOsjt8vxeJ1VZhmcqmClqilE2v9rHAALpFcuXXP4oinpiY/exec";
-  const consentCheckbox = document.getElementById("consentCheckbox");
-  const startBtn = document.getElementById("startBtn");
-  const previewBtn = document.getElementById("previewBtn");
-  const statusText = document.getElementById("statusText");
+    const gasUrl = "https://script.google.com/macros/s/AKfycbwprzLh-z2sTzzjJd1ZZjdOsjt8vxeJ1VZhmcqmClqilE2v9rHAALpFcuXXP4oinpiY/exec";
+    const consentCheckbox = document.getElementById("consentCheckbox");
+    const startBtn = document.getElementById("startBtn");
+    const statusText = document.getElementById("statusText");
 
-  consentCheckbox.addEventListener("change", function () {
-    startBtn.disabled = !this.checked;
-    statusText.textContent = this.checked
-      ? "已同意參與，可以開始作答。"
-      : "請先勾選同意參與研究。";
-  });
+    consentCheckbox.addEventListener("change", function () {
+      startBtn.disabled = !this.checked;
+      statusText.textContent = this.checked
+        ? "已同意參與，可以開始作答。"
+        : "請先勾選同意參與研究。";
+    });
 
-  async function getAssignedUrl() {
-    const response = await fetch(gasUrl);
-    const data = await response.json();
+    async function getAssignedUrl() {
+      const response = await fetch(gasUrl);
+      const data = await response.json();
 
-    if (!data.success) {
-      throw new Error(data.message || "分派失敗");
+      if (!data.success) {
+        throw new Error(data.message || "分派失敗");
+      }
+
+      return data;
     }
 
-    return data;
-  }
+    startBtn.addEventListener("click", async function () {
+      try {
+        startBtn.disabled = true;
+        statusText.textContent = "系統分派中，請稍候...";
 
-  startBtn.addEventListener("click", async function () {
-    try {
-      startBtn.disabled = true;
-      previewBtn.disabled = true;
-      statusText.textContent = "系統分派中，請稍候...";
+        const result = await getAssignedUrl();
+        statusText.textContent = `已分派至第 ${result.index} 組，正在跳轉...`;
 
-      const result = await getAssignedUrl();
-      statusText.textContent = `已分派至第 ${result.index} 組，正在跳轉...`;
-
-      window.location.href = result.url;
-    } catch (error) {
-      statusText.textContent = "發生錯誤：" + error.message;
-      startBtn.disabled = false;
-      previewBtn.disabled = false;
-    }
-  });
-
-  previewBtn.addEventListener("click", async function () {
-    try {
-      statusText.textContent = "測試分派中...";
-      const result = await getAssignedUrl();
-      statusText.textContent = `測試結果：目前分派到第 ${result.index} 組，連結為 ${result.url}`;
-    } catch (error) {
-      statusText.textContent = "測試失敗：" + error.message;
-    }
-  });
-</script>
+        window.location.href = result.url;
+      } catch (error) {
+        statusText.textContent = "發生錯誤：" + error.message;
+        startBtn.disabled = false;
+      }
+    });
+  </script>
 </body>
 </html>
