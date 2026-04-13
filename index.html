@@ -72,16 +72,16 @@
       color: #374151;
     }
 
-    /* 🔥 只針對研究聯絡資訊去掉黑點與縮排 */
+    ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    /* 只改研究聯絡資訊這一塊 */
     .contact-list {
       list-style: none;
       padding-left: 0;
       margin: 0;
-    }
-
-    ul {
-      margin: 0;
-      padding-left: 20px;
     }
 
     .checkbox-row {
@@ -112,11 +112,17 @@
       font-size: 16px;
       font-weight: 700;
       cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
     }
 
     button:disabled {
       cursor: not-allowed;
       opacity: 0.5;
+      transform: none;
     }
 
     .primary-btn {
@@ -137,16 +143,25 @@
       color: #6b7280;
       line-height: 1.7;
     }
+
+    @media (max-width: 640px) {
+      .card {
+        padding: 28px 20px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+    }
   </style>
 </head>
-
 <body>
   <main class="card">
     <div class="badge">研究問卷</div>
     <h1>歡迎參與本研究</h1>
-
     <p class="subtitle">
-      感謝您的熱心參與。本問卷為一項學術研究，目的在於了解使用者對 AI 健康助理資訊的評估與感受。
+      感謝您的熱心參與。本問卷為一項學術研究，目的是為了解讀者對於「AI 健康助理與使用者對話情境中」的資訊評估與個人感受。
+      您的填答對我們的研究非常重要，請按實際狀況作答。您所填寫的任何資料僅用於學術成果報告，絕對保密，不會將您的個人資料洩漏予第三人，也不會移作任何商業使用，未來資料結果將以集體數據方式呈現。
     </p>
 
     <section class="section">
@@ -157,6 +172,30 @@
         <li>研究生：孫煥煥、徐雅芝 敬上</li>
         <li>聯絡信箱：yclee@mis.nsysu.edu.tw</li>
       </ul>
+    </section>
+
+    <section class="section">
+      <h2>問卷說明與抽獎</h2>
+      <p>
+        本問卷填答時間不設限，請依個人速度安心填答。問卷收集完成後，將隨機抽出有效問卷共計 30 名，贈送 200 元 7-11 禮券，中獎者將以電子郵件通知。
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>問卷流程與步驟</h2>
+      <ul>
+        <li>第一步驟：請先回答您對於該健康議題的個人看法。</li>
+        <li>第二步驟：請瀏覽相關貼文，並專注閱讀貼文中的「AI 健康助理與使用者之間的對話內容」。</li>
+        <li>第三步驟：請根據您閱讀貼文後的感受，回答相關題項。</li>
+        <li>第四步驟：請填寫個人基本資料。</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>填答提醒</h2>
+      <p>
+        為確保資料品質，填答時請盡量專注，並避免中途離開或切換頁面。閱讀完本頁面後，即可正式開始。
+      </p>
     </section>
 
     <label class="checkbox-row">
@@ -176,19 +215,42 @@
   </main>
 
   <script>
-    const gasUrl = "你的 GAS URL";
+    const gasUrl = "https://script.google.com/macros/s/AKfycbwprzLh-z2sTzzjJd1ZZjdOsjt8vxeJ1VZhmcqmClqilE2v9rHAALpFcuXXP4oinpiY/exec";
     const consentCheckbox = document.getElementById("consentCheckbox");
     const startBtn = document.getElementById("startBtn");
     const statusText = document.getElementById("statusText");
 
     consentCheckbox.addEventListener("change", function () {
       startBtn.disabled = !this.checked;
+      statusText.textContent = this.checked
+        ? "已同意參與，可以開始作答。"
+        : "請先勾選同意參與研究。";
     });
 
-    startBtn.addEventListener("click", async function () {
+    async function getAssignedUrl() {
       const response = await fetch(gasUrl);
       const data = await response.json();
-      window.location.href = data.url;
+
+      if (!data.success) {
+        throw new Error(data.message || "分派失敗");
+      }
+
+      return data;
+    }
+
+    startBtn.addEventListener("click", async function () {
+      try {
+        startBtn.disabled = true;
+        statusText.textContent = "系統分派中，請稍候...";
+
+        const result = await getAssignedUrl();
+        statusText.textContent = `已分派至第 ${result.index} 組，正在跳轉...`;
+
+        window.location.href = result.url;
+      } catch (error) {
+        statusText.textContent = "發生錯誤：" + error.message;
+        startBtn.disabled = false;
+      }
     });
   </script>
 </body>
