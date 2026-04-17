@@ -241,12 +241,10 @@
     startBtn.addEventListener("click", async function () {
       try {
         startBtn.disabled = true;
-        statusText.textContent = "系統分派中，請稍候...";
-
+    
         const result = await getAssignedUrl();
-        statusText.textContent = `已分派至第 ${result.index} 組，正在跳轉...`;
-
         window.location.href = result.url;
+    
       } catch (error) {
         statusText.textContent = "發生錯誤：" + error.message;
         startBtn.disabled = false;
